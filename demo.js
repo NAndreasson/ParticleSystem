@@ -12,7 +12,7 @@
             };
   })();
 
-  this.Particles = [],
+  this.emitter = new Emitter(),
   this.mousePos = { x: 0, y: 0};
 
   var canvas = document.getElementById('canvas');
@@ -32,7 +32,7 @@
       b: 0.0 / 255,
       a: 255.0 / 255
     };
-    this.Particles.push(new Particle(x, y, 50, 50, 50, 20, color));
+    this.emitter.particles.push(new Particle(x, y, 2000, 0.1, 50, 10, color));
   }
 
   function addParticles() {
@@ -49,10 +49,13 @@
   }
 
   Renderer('canvas', 'vshader', 'fshader');
-
-  (function animloop(){
+  var startTime = Date.now();
+  (function animloop(timestamp){
+    var dt = timestamp - startTime;
+    startTime = Date.now();
     requestAnimFrame(animloop);
     // update particle system
+    emitter.update(dt);
     draw();
   })();
 

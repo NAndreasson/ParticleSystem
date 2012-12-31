@@ -3,6 +3,7 @@ function Particle(x, y, life, speed, angle, radius, color) {
     x: x,
     y: y
   };
+  this.dead = false;
   this.startingLife = this.life = life;
   this.startingRadius = this.radius = radius;
   this.color = color;
@@ -24,10 +25,22 @@ Particle.prototype.update = function(dt) {
     
     this.pos.x += this.velocity.x * dt;
     this.pos.y += this.velocity.y * dt;   
+  } else {
+    this.dead = true;
   }
 };
 
 
 function Emitter() {
+  this.particles = [];
 
 }
+
+Emitter.prototype.update = function(dt) {
+  for (var i = 0; i < this.particles.length; i++) {
+    // call each particles update method
+    var particle = this.particles[i];
+    particle.update(dt);
+    // if one is dead then unshift it
+  }
+};

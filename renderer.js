@@ -8,7 +8,6 @@ function Renderer(canvasId, vShaderId, fShaderId) {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.depthFunc(this.gl.LEQUAL);
-    console.log('Meck2');
     this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE);
     this.gl.enable(this.gl.BLEND);
     this.program = this.gl.createProgram();
@@ -42,7 +41,6 @@ function loadTexture(source) {
     gl.bindTexture(gl.TEXTURE_2D, null);
   }      
   texture.image.src = source;
-  console.log('Meckarna');
   return texture;
 }
 
@@ -89,13 +87,12 @@ function initShaders(program, vShaderId, fShaderId) {
     var vertices = [],
         radius = [],
         colors = [];
-    for (var i = 0; i < this.Particles.length; i++) {
+    for (var i = 0; i < this.emitter.particles.length; i++) {
       // add to vertices 
-      var particle = this.Particles[i];
+      var particle = this.emitter.particles[i];
       vertices.push(particle.pos.x, particle.pos.y);
       radius.push(particle.radius);
       colors.push(particle.color.r, particle.color.g, particle.color.b, particle.color.a);
-      console.log(colors);
       // add radius
     }
 
@@ -124,7 +121,7 @@ function initShaders(program, vShaderId, fShaderId) {
     this.gl.enableVertexAttribArray(color);
     this.gl.vertexAttribPointer(color, 4, this.gl.FLOAT, false, 0, 0);
 
-    this.gl.drawArrays(this.gl.POINTS, 0, this.Particles.length);
+    this.gl.drawArrays(this.gl.POINTS, 0, this.emitter.particles.length);
     // go through all the added particles and add buffer data 
     // set new buffer data 
     // draw all particles
