@@ -33,14 +33,39 @@ Particle.prototype.update = function(dt) {
 
 function Emitter() {
   this.particles = [];
-
+  this.aliveParticles = 0;
 }
 
 Emitter.prototype.update = function(dt) {
-  for (var i = 0; i < this.particles.length; i++) {
+  for (var i = 0; i < this.aliveParticles; i++) {
     // call each particles update method
     var particle = this.particles[i];
     particle.update(dt);
-    // if one is dead then unshift it
+    if (particle.dead === true) {
+      // change places 
+      if (i !== this.aliveParticles - 1) {
+        var tempParticle = this.particles[i];
+        this.particles[i] = this.particles[this.aliveParticles - 1];
+        this.particles[this.aliveParticles - 1] = tempParticle;
+      }
+      this.aliveParticles--;
+    }
   }
 };
+
+Emitter.prototype.addParticle = function(particle) {
+  // if there is a dead particle erase its data with this
+  if (this.aliveParticles < this.particles.length) {
+    // set a dead to this 
+    this.particles[this.aliveParticles] = particle;
+  } else {
+    //  push a new
+    this.particles.push(particle);
+  }
+  this.aliveParticles++;
+};
+
+Emitter.prototype.getAliveParticles = function() {
+  return this.aliveParticles;
+};
+
