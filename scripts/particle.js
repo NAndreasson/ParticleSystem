@@ -31,7 +31,26 @@ Particle.prototype.update = function(dt) {
 };
 
 
-function Emitter() {
+function Emitter(config) {
+  var defaultConfig = {
+    color: {
+      r: 255,
+      g: 255,
+      b: 255,
+      a: 255
+    }
+  }
+
+  // extend the default config if one is passed in
+  if (typeof config !== 'undefined') {
+    for (prop in config) {
+      if defaultConfig.hasOwnProperty(prop) {
+        defaultConfig[prop] = config[prop];
+      }
+    }
+  }
+
+
   this.particles = [];
   this.aliveParticles = 0;
 }

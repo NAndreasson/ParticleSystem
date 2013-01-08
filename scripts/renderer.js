@@ -131,7 +131,6 @@ function initShaders(program, vShaderId, fShaderId) {
       ctx.arc(radius, radius, radius, 0, Math.PI * 2, false);
       ctx.closePath();
 
-
       var radGrad = ctx.createRadialGradient(size / 2, size / 2, radius,size / 2,size / 2,0);
       radGrad.addColorStop(0, "rgb(0, 0, 0)");  
       radGrad.addColorStop(1, "rgb(255, 255, 255)"); 
