@@ -21,11 +21,11 @@ define(function() {
 
     if (this.life > 0) {
       var ageRatio = this.life / this.startingLife;
-      this.radius = this.startingRadius * ageRatio;    
+      this.radius = this.startingRadius * ageRatio;
       this.color.a = ageRatio;
       
       this.pos.x += this.velocity.x * dt;
-      this.pos.y += this.velocity.y * dt;   
+      this.pos.y += this.velocity.y * dt;
     } else {
       this.dead = true;
     }
