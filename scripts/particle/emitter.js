@@ -1,5 +1,5 @@
-define(['particle/particle.js'], function(Particle) {
-  function Emitter(config) {
+define(['particle/particle'], function(Particle) {
+  var Emitter = function(config) {
     var defaultConfig = {
       color: {
         r: 255,

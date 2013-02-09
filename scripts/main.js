@@ -1,4 +1,6 @@
-require([], function() {
+require(['render/renderer', 'particle/emitter'], function(Renderer, Emitter) {
+
+
   // shim layer with setTimeout fallback
   window.requestAnimFrame = (function(){
     return  window.requestAnimationFrame       || 
@@ -11,21 +13,30 @@ require([], function() {
             };
   })();
 
-  this.emitter = new Emitter(),
+
+  var canvas
+    , emitter = new Emitter();
+    console.log('Renderer', Renderer);
+    console.log('Emitter', Emitter);
+    console.log('Arguments', arguments);
+
+  function setUpCanvas() {
+    canvas = document.getElementById('canvas');
+    canvas.addEventListener('mousedown', addParticles, false);
+    canvas.addEventListener('mouseup', stopAddingParticles, false);
+    canvas.addEventListener('mousemove', mouseMove, false);
+  }
+
   this.mousePos = { x: 0, y: 0};
 
-  var canvas = document.getElementById('canvas');
-  canvas.addEventListener('mousedown', addParticles, false);
-  canvas.addEventListener('mouseup', stopAddingParticles, false);
-  canvas.addEventListener('mousemove', mouseMove, false);
 
   function addNewParticle() {
     console.log('Adding particle');
     console.log(this.mousePos);
     // add a random x offset
-    var offset = 80;
-    var x = this.mousePos.x + (Math.random() * offset - offset / 2),
-        y = this.mousePos.y;
+    var offset = 80
+      , x = this.mousePos.x + (Math.random() * offset - offset / 2)
+      , y = this.mousePos.y;
 
     var red = 200 + Math.random() * 50 - 25;
     var alpha = 155 + Math.random() * 100 - 50;
@@ -36,15 +47,10 @@ require([], function() {
       a: alpha / 255
     };
 
-    // angle should be betwween
-    var angleVariation = Math.random() * 60 - 60 / 2;
-    var angle = 90.0 + angleVariation; 
-    var radius = 10 + Math.random() * 10 - 5;
-    //  random size
-    //  random life 
-    // change colors a bit
-    //  random speed 
-    var speed = 150 + Math.random() * 50 - 25;
+    var angleVariation = Math.random() * 60 - 60 / 2
+      , angle = 90.0 + angleVariation
+      , radius = 10 + Math.random() * 10 - 5
+      , speed = 150 + Math.random() * 50 - 25;
     this.emitter.addParticle(new Particle(x, y, 5, speed, angle, radius, color));
   }
 
@@ -61,7 +67,7 @@ require([], function() {
     window.mousePos.y = e.offsetY;
   }
 
-  Renderer('canvas', 'vshader', 'fshader');
+  Renderer.renderer('canvas', 'vshader', 'fshader');
   var startTime = Date.now();
   (function animloop(timestamp){
     var dt = (timestamp - startTime) / 1000;
@@ -69,6 +75,6 @@ require([], function() {
     requestAnimFrame(animloop);
     // update particle system
     emitter.update(dt);
-    draw();
+    Renderer.draw();
   })();
 });
